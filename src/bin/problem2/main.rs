@@ -1,5 +1,5 @@
 use std::iter::from_fn;
-use std::mem::swap;
+use std::mem::replace;
 
 fn main() {
     let input = parse_input(include_str!("input.txt"));
@@ -46,9 +46,8 @@ fn solve_part3(data: &[bool]) -> i64 {
             return None;
         }
 
-        let mut next_data = process_layer(&data);
-        swap(&mut data, &mut next_data);
-        return Some(next_data);
+        let next_data = process_layer(&data);
+        Some(replace(&mut data, next_data))
     })
     .map(|data| data.into_iter().filter(|&x| x).count() as i64)
     .sum()
